@@ -36,13 +36,16 @@
                 <mxCell id="38" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERmandOne;startFill=0;" edge="1" parent="1" source="23" target="28">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
+                <mxCell id="46" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=ERmany;endFill=0;startArrow=ERoneToMany;startFill=0;" edge="1" parent="1" source="23" target="44">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
                 <mxCell id="23" value="travel_zones" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="85" y="100" width="150" height="80" as="geometry">
+                    <mxGeometry x="85" y="100" width="145" height="80" as="geometry">
                         <mxRectangle x="85" y="100" width="120" height="50" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="24" value="zone_id: INT Constrain&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" vertex="1" parent="23">
-                    <mxGeometry y="50" width="150" height="30" as="geometry"/>
+                    <mxGeometry y="50" width="145" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="28" value="travel_pass_zones" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=1;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" collapsed="1" parent="1">
                     <mxGeometry x="80" y="230" width="160" height="40" as="geometry">
@@ -74,6 +77,55 @@
                             <mxPoint x="160" y="550"/>
                         </Array>
                     </mxGeometry>
+                </mxCell>
+                <mxCell id="44" value="station_zones" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="300" y="105" width="160" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" value="station_id: INT" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" vertex="1" parent="44">
+                    <mxGeometry y="50" width="160" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="63" value="" style="edgeStyle=none;html=1;endArrow=ERmandOne;endFill=0;startArrow=ERmandOne;startFill=0;" edge="1" parent="1" source="47" target="61">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="47" value="journeys" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="570" y="40" width="170" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="48" value="travel_id: BIGINT&lt;div&gt;start_station_id {FK}&lt;/div&gt;&lt;div&gt;end_station_id {FK}&lt;/div&gt;&lt;div&gt;start_time&lt;/div&gt;&lt;div&gt;end_time&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" vertex="1" parent="47">
+                    <mxGeometry y="50" width="170" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="49" style="edgeStyle=none;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=ERmandOne;endFill=0;startArrow=ERmany;startFill=0;" edge="1" parent="1" source="48" target="44">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="50" value="two_hour_extend" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="76.25" y="725" width="162.5" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="51" value="zone_count: int&lt;div&gt;time_limit: minutes&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" vertex="1" parent="50">
+                    <mxGeometry y="50" width="162.5" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="54" value="fare_money" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="280" y="710" width="150" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="55" value="zone_count: int&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;base_fare: float&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;capping_fare: float&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;is_zone_1: bool&lt;/font&gt;&lt;/div&gt;&lt;div&gt;status_active: bool&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" vertex="1" parent="54">
+                    <mxGeometry y="50" width="150" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="58" value="fare_pass" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="470" y="710" width="150" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="59" value="no_zones: int&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;weekly_pass: float&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;monthly_yearly_pass: float&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;is_zone_1: bool&lt;/font&gt;&lt;/div&gt;&lt;div&gt;status_active: bool&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" vertex="1" parent="58">
+                    <mxGeometry y="50" width="150" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="60" style="edgeStyle=none;html=1;entryX=1;entryY=0.25;entryDx=0;entryDy=0;endArrow=ERmandOne;endFill=0;startArrow=ERmany;startFill=0;" edge="1" parent="1" source="48" target="3">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="660" y="568"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="61" value="fare_journeys" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="827" y="40" width="163" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="62" value="start_zone{FK}&lt;div&gt;end_zone{FK}&lt;/div&gt;&lt;div&gt;is_two_hour_fare: bool&lt;/div&gt;&lt;div&gt;is_pass_fare: bool&lt;/div&gt;&lt;div&gt;reason_code: Constraint&lt;/div&gt;&lt;div&gt;fare: float&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" vertex="1" parent="61">
+                    <mxGeometry y="50" width="163" height="100" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

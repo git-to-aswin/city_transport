@@ -9,10 +9,10 @@ CREATE TABLE IF NOT EXISTS ref.travel_zones (
 );
 
 -- 2) station_zones
-CREATE TABLE IF NOT EXISTS ref.station_zones (
+CREATE TABLE IF NOT EXISTS ref.stations (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
-  station_id BIGINT NOT NULL,
+  station_id SMALLINT NOT NULL,
   station_name VARCHAR(25) NOT NULL,
   zone_id    SMALLINT NOT NULL REFERENCES ref.travel_zones(zone_id),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS ref.station_zones (
 );
 
 -- Indexes for performance
-CREATE INDEX IF NOT EXISTS idx_station_zones__station_id ON ref.station_zones(station_id);
+CREATE INDEX IF NOT EXISTS idx_stations__station_id ON ref.stations(station_id);
 
 -- 3) two_hour_window
 CREATE TABLE IF NOT EXISTS ref.two_hour_windows (
@@ -94,3 +94,32 @@ CREATE TABLE IF NOT EXISTS ref.railpay_card_types (
 
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_railpay_card_types__is_active ON ref.railpay_card_types(card_type_id, is_active);
+
+-- 7) rail_routes
+CREATE TABLE IF NOT EXISTS ref.rail_routes (
+  route_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  route_name VARCHAR(50) NOT NULL UNIQUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 8) route_stations
+CREATE TABLE IF NOT EXISTS ref.rail_route_stations (
+  route_id INT NOT NULL REFERENCES ref.rail_routes(route_id) ON DELETE CASCADE,
+  station_id SMALLINT NOT NULL REFERENCES ref.stations(station_id),
+  stop_sequence SMALLINT NOT NULL,
+
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+  PRIMARY KEY (route_id, stop_sequence),
+  CONSTRAINT rail_route_station_unique UNIQUE (route_id, station_id)
+);
+
+-- Fast: “all stations for a route in order”
+CREATE INDEX IF NOT EXISTS idx_route_stations__route_seq
+ON ref.rail_route_stations(route_id, stop_sequence);
+
+-- Fast: “which routes pass through this station?”
+CREATE INDEX IF NOT EXISTS idx_route_stations__station
+ON ref.rail_route_stations(station_id, route_id);

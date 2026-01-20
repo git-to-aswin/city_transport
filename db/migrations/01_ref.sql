@@ -78,6 +78,8 @@ CREATE TABLE IF NOT EXISTS ref.railpay_passes (
   -- prevent conflicting flags
   CONSTRAINT railpay_pass_zone_flags_chk
     CHECK (NOT (is_zone_1 AND is_zone_2))  
+
+  -- 
 );
 
 -- Indexes for performance

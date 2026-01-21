@@ -12,7 +12,9 @@ VALUES
   -- 3 zones: $44.00 weekly, $6.08 per day
   (3, 4400, 608, FALSE, FALSE, 'active'),
   -- 4+ zones: $57.00 weekly, $6.84 per day (store as zone_count=4 and clamp in logic)
-  (4, 5700, 684, FALSE, FALSE, 'active')
+  (4, 5700, 684, FALSE, FALSE, 'active'),
+  -- ONLY Zone 2
+  (1, 3600, 432, FALSE, TRUE,  'active')
 ON CONFLICT (zone_count, is_zone_1, is_zone_2)
 DO UPDATE
 SET weekly_pass_cents         = EXCLUDED.weekly_pass_cents,

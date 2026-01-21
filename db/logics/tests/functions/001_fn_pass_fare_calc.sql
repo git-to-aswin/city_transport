@@ -18,13 +18,13 @@ BEGIN
   -- Excluding zone1, 3 zones, 30 days (daily_rate * days)
   v := ref.fn_pass_fare_calc(30, ARRAY[2,3,4]::smallint[]);
   IF v <> (608 * 30) THEN
-    RAISE EXCEPTION 'fn_pass_fare_calc excl z1 (3 zones) 30d: expected % got %', (608*30), v;
+    RAISE EXCEPTION 'fn_pass_fare_calc excl z1 (3 zones) 30d: expected % got %', (608 * 30), v;
   END IF;
 
   -- Clamp to 4+ zones
   v := ref.fn_pass_fare_calc(28, ARRAY[2,3,4,5,6]::smallint[]);
   IF v <> (684 * 28) THEN
-    RAISE EXCEPTION 'fn_pass_fare_calc clamp 4+ 28d: expected % got %', (684*28), v;
+    RAISE EXCEPTION 'fn_pass_fare_calc clamp 4+ 28d: expected % got %', (684 * 28), v;
   END IF;
 END $$;
 

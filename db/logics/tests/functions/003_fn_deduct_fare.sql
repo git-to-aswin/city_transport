@@ -14,7 +14,8 @@ BEGIN
     RAISE EXCEPTION 'fn_deduct_fare expected TRUE, got %', v_ok;
   END IF;
 
-  SELECT balance_cents INTO v_balance
+  SELECT balance_cents
+  INTO v_balance
   FROM card.rail_cards
   WHERE card_id = v_card_id;
   IF v_balance <> 3800 THEN
@@ -26,7 +27,8 @@ BEGIN
     RAISE EXCEPTION 'fn_deduct_fare expected FALSE for insufficient funds, got %', v_ok;
   END IF;
 
-  SELECT balance_cents INTO v_balance
+  SELECT balance_cents
+  INTO v_balance
   FROM card.rail_cards
   WHERE card_id = v_card_id;
   IF v_balance <> 3800 THEN

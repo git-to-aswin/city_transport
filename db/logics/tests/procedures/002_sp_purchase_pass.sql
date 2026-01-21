@@ -33,7 +33,10 @@ BEGIN
     RAISE EXCEPTION 'expected SUCCESS message, got %', v_message;
   END IF;
   IF NOT EXISTS (
-    SELECT 1 FROM card.rail_passes WHERE pass_id = v_pass_id AND card_id = v_card_id
+    SELECT 1
+    FROM card.rail_passes
+    WHERE pass_id = v_pass_id
+      AND card_id = v_card_id
   ) THEN
     RAISE EXCEPTION 'expected rail_passes row for pass_id=%', v_pass_id;
   END IF;

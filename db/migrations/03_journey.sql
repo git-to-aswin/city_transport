@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS journey.rail_journeys (
     status TEXT NOT NULL DEFAULT 'open'
       CHECK (status IN ('open', 'closed', 'cancelled','incomplete')),
     
-    rail_route_id INT NOT NULL REFERENCES ref.rail_routes(route_id),
+    rail_route_id INT REFERENCES ref.rail_routes(route_id),
 
     start_station_id SMALLINT NOT NULL REFERENCES ref.stations(id),
     end_station_id SMALLINT REFERENCES ref.stations(id),

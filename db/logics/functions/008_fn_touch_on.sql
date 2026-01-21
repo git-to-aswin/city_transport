@@ -6,6 +6,8 @@ LANGUAGE plpgsql
 AS $$
 DECLARE
   v_route_id INT;
+  v_open_journey_id BIGINT;
+  v_started_at TIMESTAMPTZ;
 BEGIN
   IF NOT EXISTS (
     SELECT 1
@@ -28,6 +30,13 @@ BEGIN
   END IF;
 
   INSERT INTO journey.rail_journeys (card_id, rail_route_id, start_station_id, started_at, status)
-  VALUES (p_card_id, v_route_id, p_station_row_id, NOW(), 'open');
+  VALUES (p_card_id, v_route_id, p_station_row_id, NOW(), 'open') RETURNING journey_id, started_at INTO (v_open_journey_id, v_started_at);
+
+  INSERT INTO journey.rail_journey_fares (journey_id, journey_started_at, start_zone)
+  SELECT
+    v_open_journey_id,
+    v_started_at,
+    (SELECT MIN(zone_id) FROM ref.stations WHERE station_id = v_start_station_id);
+
 END;
 $$;

@@ -41,8 +41,6 @@ BEGIN
             
         WHEN v_status = 'touch_off' THEN
             -- touch OFF 
+            
             -- Close the old record with this station
-
-    -- send to touch_ON or touch_OFF procedure
-
 END;

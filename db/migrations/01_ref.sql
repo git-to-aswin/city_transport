@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS ref.travel_zones (
 
 -- 2) station_zones
 CREATE TABLE IF NOT EXISTS ref.stations (
-  station_id SMALLINT NOT NULL PRIMARY KEY,
+  id SMALLINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  station_id SMALLINT NOT NULL,
   station_name VARCHAR(25) NOT NULL,
   zone_id    SMALLINT NOT NULL REFERENCES ref.travel_zones(zone_id),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -78,8 +79,6 @@ CREATE TABLE IF NOT EXISTS ref.railpay_passes (
   -- prevent conflicting flags
   CONSTRAINT railpay_pass_zone_flags_chk
     CHECK (NOT (is_zone_1 AND is_zone_2))  
-
-  -- 
 );
 
 -- Indexes for performance

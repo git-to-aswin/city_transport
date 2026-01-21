@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS journey.rail_journeys (
     card_id BIGINT NOT NULL REFERENCES card.rail_cards(card_id),
 
     status TEXT NOT NULL DEFAULT 'open'
-      CHECK (status IN ('open', 'closed', 'incomplete')),
+      CHECK (status IN ('open', 'closed', 'cancelled','incomplete')),
     
     rail_route_id INT NOT NULL REFERENCES ref.rail_routes(route_id),
 

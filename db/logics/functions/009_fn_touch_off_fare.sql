@@ -11,8 +11,8 @@ LANGUAGE plpgsql
 AS $$
 DECLARE
   v_zone_count SMALLINT;
-  v_is_zone_1 BOOLEAN;
-  v_is_zone_2 BOOLEAN;
+  v_is_zone_1 BOOLEAN := FALSE;
+  v_is_zone_2 BOOLEAN := FALSE;
 
   v_base_fare_cents INT;
   v_cap_fare_cents  INT;
@@ -32,7 +32,9 @@ BEGIN
   END IF;
 
   v_is_zone_1 := (p_start_zone = 1 OR p_end_zone = 1);
-  v_is_zone_2 := (p_start_zone = 2 OR p_end_zone = 2);
+  IF NOT v_is_zone_1 AND v_zone_count = 1 THEN
+    v_is_zone_2 := (p_start_zone = 2 OR p_end_zone = 2);
+  END IF;
 
   -- Lookup base + cap fares
   SELECT m.base_fare_cents, m.capping_fare_cents

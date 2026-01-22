@@ -1,10 +1,12 @@
-CREATE OR REPLACE FUNCTION fn_touch_off (
+CREATE OR REPLACE FUNCTION journey.fn_touch_off (
     p_card_id BIGINT,
     p_station_row_id SMALLINT,
     p_journey_id BIGINT,
     p_start_zone SMALLINT,
     p_end_zone SMALLINT
 )
+RETURNS VOID
+LANGUAGE plpgsql
 AS $$
 DECLARE
     v_start_time TIMESTAMPTZ;
@@ -17,8 +19,9 @@ BEGIN
         status = 'closed',
         updated_at = NOW()
     WHERE journey_id = p_journey_id
-    RETURNING started_at,ended_at INTO (v_start_time, v_end_time);
+    RETURNING started_at,ended_at INTO v_start_time, v_end_time;
 
-    SELECT journey.fn_touch_off_fare(p_journey_id, p_card_id, p_start_zone, v_start_time, v_end_time);
+    PERFORM journey.fn_touch_off_fare(p_journey_id:: BIGINT, p_card_id::BIGINT, p_start_zone::SMALLINT,
+    p_end_zone, v_start_time, v_end_time);
 END;
 $$;

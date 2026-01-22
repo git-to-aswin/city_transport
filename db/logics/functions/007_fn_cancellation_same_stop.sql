@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION ref.fn_cancellation_same_stop(
+CREATE OR REPLACE FUNCTION journey.fn_cancellation_same_stop(
   p_open_journey_id BIGINT,
   p_station_id SMALLINT
 ) RETURNS VOID

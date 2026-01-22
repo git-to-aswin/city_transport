@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION ref.fn_end_incomplete_trip(
+CREATE OR REPLACE FUNCTION journey.fn_end_incomplete_trip(
   p_card_id BIGINT,
   p_journey_id BIGINT,
   p_start_zone SMALLINT
@@ -31,7 +31,7 @@ BEGIN
   INTO v_base_fare_cents, v_capping_fare_cents
   FROM ref.railpay_money
   WHERE zone_count = 1
-    AND is_zone_1 = v_is_zone_1
+    AND is_zone_1 = TRUE -- for incompelete journey we consider whole route
     AND is_zone_2 = v_is_zone_2
     AND status_active = 'active'
   LIMIT 1;

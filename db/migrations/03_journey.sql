@@ -69,8 +69,8 @@ CREATE TABLE IF NOT EXISTS journey.rail_journey_fares (
       'other', 'railpass_fare'
     )),
 
-  fare_cents INT NOT NULL CHECK (fare_cents >= 0),
-  fare_calculated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  fare_cents INT CHECK (fare_cents >= 0),
+  fare_calculated_at TIMESTAMPTZ DEFAULT NOW(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 

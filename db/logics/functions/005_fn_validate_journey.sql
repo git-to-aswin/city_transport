@@ -27,10 +27,10 @@ DECLARE
 BEGIN
   -- 1) Find latest open journey
   SELECT rj.journey_id, rj.rail_route_id, rj.start_station_id, rj.started_at
-  INTO v_open_journey_id, v_route_id, v_start_station_sid, v_started_at
+  INTO v_open_journey_id, v_route_id, v_start_station_row_id, v_started_at
   FROM journey.rail_journeys rj
   WHERE rj.card_id = p_card_id
-    AND rj.end_station_id IS NULL
+    AND rj.status = 'open'
   ORDER BY rj.started_at DESC
   LIMIT 1;
 
@@ -41,25 +41,27 @@ BEGIN
     RETURN NEXT;
     RETURN;
   END IF;
-
+  RAISE NOTICE 'NOT A touch_on JOURNEY';
   journey_id := v_open_journey_id;
 
   -- 2) Same station within 15 minutes => cancel candidate
-  IF v_start_station_sid = p_station_id
-     AND p_touched_at <= v_started_at + INTERVAL '15 minutes' THEN
+
+  IF EXISTS (
+      SELECT 1 FROM ref.stations
+      WHERE station_id = p_station_id AND id = v_start_station_row_id) 
+          AND p_touched_at <= v_started_at + INTERVAL '15 minutes' THEN
     status := 'same_station_cancellation';
+    station_row_id := v_start_station_row_id;
     RETURN NEXT;
     RETURN;
   END IF;
+  RAISE NOTICE 'NOT A same_station_cancellation JOURNEY';
+
 
   -- 3) Map station_id -> stations.id (choose a stable row if overlaps exist)
   SELECT MIN(id) INTO v_curr_station_row_id
   FROM ref.stations
   WHERE station_id = p_station_id;
-
-  SELECT MIN(id) INTO v_start_station_row_id
-  FROM ref.stations
-  WHERE station_id = v_start_station_sid;
 
   IF v_curr_station_row_id IS NULL OR v_start_station_row_id IS NULL THEN
     RAISE EXCEPTION 'Unkown stationID';
@@ -78,20 +80,16 @@ BEGIN
       AND r2.station_id = v_curr_station_row_id::smallint
   );
 
-  IF NOT v_on_route THEN
-    status := 'incomplete_trip';
-    RETURN NEXT;
-    RETURN;
-  END IF;
+  
 
   -- 5) Get zones (use MIN(zone_id) to pick one if overlap)
-  SELECT MIN(zone_id)::smallint INTO v_start_zone
+  SELECT zone_id INTO v_start_zone
   FROM ref.stations
-  WHERE station_id = v_start_station_sid;
+  WHERE id = v_start_station_row_id;
 
-  SELECT MIN(zone_id)::smallint INTO v_curr_zone
+  SELECT zone_id INTO v_curr_zone
   FROM ref.stations
-  WHERE station_id = p_station_id;
+  WHERE id = v_curr_station_row_id;
 
   IF v_start_zone IS NULL OR v_curr_zone IS NULL THEN
     RAISE EXCEPTION 'Unkown ZONE';
@@ -99,6 +97,13 @@ BEGIN
 
   start_zone := v_start_zone;
   end_zone := v_curr_zone;
+
+    IF NOT v_on_route THEN
+    RAISE NOTICE 'Irrelavant routes';
+    status := 'incomplete_trip';
+    RETURN NEXT;
+    RETURN;
+    END IF;
 
   v_zones_travelled := (ABS(v_start_zone - v_curr_zone) + 1)::smallint;
 
@@ -112,6 +117,7 @@ BEGIN
   WHERE zone_count = v_zones_travelled;
 
   IF v_time_window IS NULL THEN
+    RAISE NOTICE 'More than two hour window journey';
     status := 'incomplete_trip';
     RETURN NEXT;
     RETURN;
